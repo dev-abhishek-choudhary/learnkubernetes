@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+  labels: 
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - image: postgres
+          name: postgres-db
+          ports:
+            - containerPort: 8080
+      env:
+        -       
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-service
+spec:
+  selector:
+    app: java
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080                   
